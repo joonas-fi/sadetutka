@@ -13,7 +13,7 @@ It basically produces these images:
 
 ![](https://s3.amazonaws.com/files.function61.com/sadetutka/meteogram.png)
 
-![](https://s3.amazonaws.com/files.function61.com/sadetutka/sadetutka.png)
+![](https://s3.amazonaws.com/files.function61.com/sadetutka/sadetutka.gif)
 
 From data in [https://www.foreca.fi/Finland/Tampere](https://www.foreca.fi/Finland/Tampere)
 
