@@ -11,10 +11,7 @@
 			"commands": {
 				"build": ["bin/build.sh"],
 				"dev": ["bash"]
-			},
-			"dev_shell_history": [
-				"misc/seed-data/import.sh"
-			]
+			}
 		},
 		{
 			"name": "publisher",
