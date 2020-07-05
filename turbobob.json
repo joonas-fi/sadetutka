@@ -19,6 +19,7 @@
 			"mount_destination": "/workspace",
 			"commands": {
 				"publish": ["publish-gh.sh", "joonas-fi/sadetutka", "rel/"],
+				"build": ["true"],
 				"dev": ["bash"]
 			},
 			"pass_envs": [
