@@ -14,9 +14,12 @@ import (
 	"github.com/function61/chrome-server/pkg/chromeserverclient"
 	"github.com/function61/gokit/aws/lambdautils"
 	"github.com/function61/gokit/aws/s3facade"
+	"github.com/function61/gokit/dynversion"
 	"github.com/function61/gokit/ezhttp"
+	"github.com/function61/gokit/jsonfile"
 	"github.com/function61/gokit/logex"
 	"github.com/function61/gokit/osutil"
+	"github.com/spf13/cobra"
 )
 
 // defined in script.js
@@ -28,14 +31,30 @@ type scriptDataOutput struct {
 func main() {
 	if lambdautils.InLambda() {
 		// we just assume it's a CloudWatch scheduler trigger so drop input payload
-		lambda.StartHandler(lambdautils.NoPayloadAdapter(logic))
+		lambda.StartHandler(lambdautils.NoPayloadAdapter(func(ctx context.Context) error { return logic(ctx, false) }))
 		return
 	}
 
-	osutil.ExitIfError(logic(osutil.CancelOnInterruptOrTerminate(logex.StandardLogger())))
+	debug := false
+
+	cmd := &cobra.Command{
+		Use:     os.Args[0],
+		Short:   "Sadetutka",
+		Version: dynversion.Version,
+		Args:    cobra.NoArgs,
+		Run: func(cmd *cobra.Command, args []string) {
+			osutil.ExitIfError(logic(
+				osutil.CancelOnInterruptOrTerminate(logex.StandardLogger()),
+				debug))
+		},
+	}
+
+	cmd.Flags().BoolVarP(&debug, "debug", "", debug, "Prints scraper raw output")
+
+	osutil.ExitIfError(cmd.Execute())
 }
 
-func logic(ctx context.Context) error {
+func logic(ctx context.Context, debug bool) error {
 	bucket, err := s3facade.Bucket("files.function61.com", nil, "us-east-1")
 	if err != nil {
 		return err
@@ -62,10 +81,15 @@ func logic(ctx context.Context) error {
 	log.Println("executing scraper")
 
 	scriptOuput := &scriptDataOutput{}
-	if _, err := chromeServer.Run(ctx, string(script), scriptOuput, &chromeserverclient.Options{
+	output, err := chromeServer.Run(ctx, string(script), scriptOuput, &chromeserverclient.Options{
 		ErrorAutoScreenshot: true,
-	}); err != nil {
+	})
+	if err != nil {
 		return err
+	}
+
+	if debug {
+		return jsonfile.Marshal(os.Stdout, output)
 	}
 
 	localFrameFilenames, err := downloadFilesConcurrently(
