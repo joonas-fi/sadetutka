@@ -34,9 +34,9 @@ async function fetchAndStoreSadetutkaFrames(ctx, console, page) {
 
 	const url = 'https://www.foreca.fi/sadetutka/etela-suomi?1h';
 
-	await ridOfCookieConsentDialog(page);
-
 	await page.goto(url, { waitUntil: 'networkidle0' });
+
+	await ridOfCookieConsentDialog(page);
 
 	// less noise on screenshots
 	await hideMapOverlays(page);
@@ -82,9 +82,9 @@ async function fetchAndStoreMeteogram(ctx, console, page) {
 		height: 1024,
 	})
 
-	await ridOfCookieConsentDialog(page);
-
 	await page.goto('https://www.foreca.fi/Finland/Tampere?1h', { waitUntil: 'networkidle0' });
+
+	await ridOfCookieConsentDialog(page);
 
 	const meteogram = await page.$('#meteogram');
 	if (!meteogram) {
@@ -108,9 +108,15 @@ async function hideMapOverlays(page) {
 }
 
 async function ridOfCookieConsentDialog(page) {
+	await page.addStyleTag({ content: `.qc-cmp2-container { display: none }`});
+
+	// don't know what the hell changed in this mechanism, but this doesn't seem to work anymore
+	// (now using CSS to hide the overlay)
+	/*
 	await page.setCookie({
 		name: 'euconsent-v2',
 		value: 'dummy', // doesn't seem to matter
 		domain: 'www.foreca.fi',
 	});
+	*/
 }
