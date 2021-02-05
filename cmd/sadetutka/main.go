@@ -113,7 +113,7 @@ func logic(ctx context.Context, debug bool) error {
 	if err := uploadFile(
 		ctx,
 		gifName,
-		"sadetutka/"+gifName,
+		"sadetutka/latest.gif",
 		"image/gif",
 		bucket,
 	); err != nil {
