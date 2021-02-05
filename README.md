@@ -11,9 +11,12 @@ This runs on AWS Lambda.
 
 It basically produces these images:
 
-![](https://s3.amazonaws.com/files.function61.com/sadetutka/meteogram.png)
+![](https://function61.com/files/sadetutka/meteogram.png)
 
-![](https://s3.amazonaws.com/files.function61.com/sadetutka/sadetutka.gif)
+![](https://function61.com/files/sadetutka/latest.gif)
+
+**IMPORTANT!** If you're planning on linking to these files, **do not copy GitHub's camo URL directly!**
+It'll prevent caching and cost me unnecessary bandwidth! Get the raw URLs from the [readme](README.md).
 
 From data in [https://www.foreca.fi/Finland/Tampere](https://www.foreca.fi/Finland/Tampere)
 

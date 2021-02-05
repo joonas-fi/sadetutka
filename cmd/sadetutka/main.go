@@ -100,7 +100,7 @@ func logic(ctx context.Context, debug bool) error {
 		return err
 	}
 
-	gifName := filepath.Join(workdir, "sadetutka.gif")
+	gifName := filepath.Join(workdir, "latest.gif")
 
 	log.Printf("making %s", gifName)
 
@@ -113,7 +113,7 @@ func logic(ctx context.Context, debug bool) error {
 	if err := uploadFile(
 		ctx,
 		gifName,
-		"sadetutka/sadetutka.gif",
+		"sadetutka/"+gifName,
 		"image/gif",
 		bucket,
 	); err != nil {
