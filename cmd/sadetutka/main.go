@@ -68,7 +68,7 @@ func logic(ctx context.Context, debug bool) error {
 	}
 	defer os.RemoveAll(workdir)
 
-	// for convenience, embed the script so we can have single-binary Labmda, but for local editing if
+	// for convenience, embed the script so we can have single-binary Lambda, but for local editing if
 	// it exists in the workdir, use that (so you don't have to compile to iterate on the script)
 	script, err := fs.ReadFile(newOverlayFs(sadetutka.ScraperScript, os.DirFS(".")), "scraperscript.js")
 	if err != nil {
