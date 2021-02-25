@@ -44,3 +44,8 @@ Why is this public?
 I shared this not because it's ready-to-use for anybody else, but in the hopes if the
 techniques help anybody else.
 
+
+Debug
+-----
+
+If the script has broken, run `$ bob dev` and it'll give you pro-tips for debugging.

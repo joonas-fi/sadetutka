@@ -12,7 +12,11 @@
 			"commands": {
 				"build": ["bin/build.sh"],
 				"dev": ["bash"]
-			}
+			},
+			"dev_shell_commands": [
+				{ "command": "source creds.env", "important": true },
+				{ "command": "rel/sadetutka_linux-amd64 --debug", "important": true }
+			]
 		},
 		{
 			"name": "publisher",
