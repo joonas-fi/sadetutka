@@ -5,6 +5,7 @@ import (
 	"context"
 	_ "image/png"
 	"io"
+	"io/fs"
 	"io/ioutil"
 	"log"
 	"os"
@@ -19,6 +20,7 @@ import (
 	"github.com/function61/gokit/jsonfile"
 	"github.com/function61/gokit/logex"
 	"github.com/function61/gokit/osutil"
+	"github.com/joonas-fi/sadetutka"
 	"github.com/spf13/cobra"
 )
 
@@ -66,7 +68,9 @@ func logic(ctx context.Context, debug bool) error {
 	}
 	defer os.RemoveAll(workdir)
 
-	script, err := ioutil.ReadFile("script.js")
+	// for convenience, embed the script so we can have single-binary Labmda, but for local editing if
+	// it exists in the workdir, use that (so you don't have to compile to iterate on the script)
+	script, err := fs.ReadFile(newOverlayFs(sadetutka.ScraperScript, os.DirFS(".")), "scraperscript.js")
 	if err != nil {
 		return err
 	}

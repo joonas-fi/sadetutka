@@ -10,6 +10,7 @@ import (
 	"image/gif"
 	_ "image/png"
 	"io"
+	"io/fs"
 	"log"
 	"os"
 	"path"
@@ -178,4 +179,28 @@ func downloadFilesConcurrently(
 			break
 		}
 	})
+}
+
+type overlayFs struct {
+	lower fs.FS
+	upper fs.FS
+}
+
+// makes an "overlay FS", where files are accessed from "upper" (usually R/W) dir first, and if not exists,
+// then from "lower" (usually read-only). for semantics see https://wiki.archlinux.org/index.php/Overlay_filesystem
+func newOverlayFs(lower fs.FS, upper fs.FS) fs.FS {
+	return &overlayFs{lower, upper}
+}
+
+func (o *overlayFs) Open(name string) (fs.File, error) {
+	upperFile, err := o.upper.Open(name)
+	if err != nil {
+		if os.IsNotExist(err) {
+			return o.lower.Open(name)
+		} else {
+			return nil, err
+		}
+	}
+
+	return upperFile, nil
 }
