@@ -41,13 +41,13 @@ async function fetchAndStoreSadetutkaFrames(ctx, console, page) {
 	// less noise on screenshots
 	await hideMapOverlays(page);
 
-	const map = await page.$('#map');
+	const map = await page.$('#vectormap div');
 	if (!map) {
 		throw new Error('Failed to find map')
 	}
 
 	const hoverOnStep = async (stepNumber) => {
-		await page.hover('#step'+stepNumber);
+		await page.hover('#tsc_'+stepNumber);
 	}
 
 	// first step triggers loading all the images for the next steps as well
@@ -60,7 +60,7 @@ async function fetchAndStoreSadetutkaFrames(ctx, console, page) {
 
 	// the map has 25 steps (= timestamps). hover over all of them in order to capture
 	// each time for the gif we're about to make
-	for (let stepNumber = 0; stepNumber < 25; stepNumber++) {
+	for (let stepNumber = 0; stepNumber <= 23; stepNumber++) {
 		// the labels are ID'd in UI [step0 .. step24]
 		await hoverOnStep(stepNumber);
 
