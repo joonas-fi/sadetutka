@@ -16,7 +16,8 @@ It basically produces these images:
 ![](https://function61.com/files/sadetutka/latest.gif?utm_source=gh_camo)
 
 **IMPORTANT!** If you're planning on linking to these files, **do not copy GitHub's camo URL directly!**
-It'll prevent caching and cost me unnecessary bandwidth! The raw URLs are here:
+[It'll prevent caching and cost me unnecessary bandwidth](https://joonas.fi/2021/02/locating-costly-aws-s3-buckets/)!
+The raw URLs are:
 
 https://function61.com/files/sadetutka/meteogram.png?utm_source=gh
 
