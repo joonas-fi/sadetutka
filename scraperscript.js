@@ -97,13 +97,14 @@ async function fetchAndStoreMeteogram(ctx, console, page) {
 }
 
 async function hideMapOverlays(page) {
+	// try hide all unnecessary UI elements (except time selector)
 	await page.addStyleTag({ content: `
 		.ol-zoom,
-		.ol-control-drag-button,
 		.ol-attribution,
-		.ol-control-home-button,
-		.ol-custom-arealist-control,
-		.playbtn { display: none }
+		#vectormap > div > div:not(.map-control-time):not(.ol-viewport),
+		.map-control-time img {
+			display:none
+		}
 	`});
 }
 
