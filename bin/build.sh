@@ -5,7 +5,7 @@ source /build-common.sh
 BINARY_NAME="sadetutka"
 COMPILE_IN_DIRECTORY="cmd/sadetutka"
 
-# TODO: one deployerspec is done, we can stop overriding this from base image
+# TODO: once deployerspec is done, we can stop overriding this from base image
 function packageLambdaFunction {
 	if [ ! -z ${FASTBUILD+x} ]; then return; fi
 
