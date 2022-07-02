@@ -1,3 +1,5 @@
+⬆️ For table of contents, click the above icon
+
 ![Build status](https://github.com/joonas-fi/sadetutka/workflows/Build/badge.svg)
 
 What?
