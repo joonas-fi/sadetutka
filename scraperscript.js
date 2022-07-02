@@ -109,7 +109,12 @@ async function hideMapOverlays(page) {
 }
 
 async function ridOfCookieConsentDialog(page) {
-	await page.addStyleTag({ content: `.qc-cmp2-container { display: none }`});
+	await page.addStyleTag({ content: `
+.qc-cmp2-container { display: none }
+
+/* survey dialog */
+.cf-container { display: none; }
+`});
 
 	// don't know what the hell changed in this mechanism, but this doesn't seem to work anymore
 	// (now using CSS to hide the overlay)
