@@ -6,7 +6,6 @@ import (
 	_ "image/png"
 	"io"
 	"io/fs"
-	"io/ioutil"
 	"log"
 	"os"
 	"path/filepath"
@@ -62,7 +61,7 @@ func logic(ctx context.Context, debug bool) error {
 		return err
 	}
 
-	workdir, err := ioutil.TempDir("", "sadetutka-*")
+	workdir, err := os.MkdirTemp("", "sadetutka-*")
 	if err != nil {
 		return err
 	}
