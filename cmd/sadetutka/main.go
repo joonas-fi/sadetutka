@@ -33,7 +33,7 @@ type scriptDataOutput struct {
 func main() {
 	if lambdautils.InLambda() {
 		// we just assume it's a CloudWatch scheduler trigger so drop input payload
-		lambda.StartHandler(lambdautils.NoPayloadAdapter(func(ctx context.Context) error { return logic(ctx, false) }))
+		lambda.StartHandler(lambdautils.NoPayloadAdapter(func(ctx context.Context) error { return logic(ctx, false, logex.StandardLogger()) }))
 		return
 	}
 
@@ -45,9 +45,11 @@ func main() {
 		Version: dynversion.Version,
 		Args:    cobra.NoArgs,
 		Run: func(cmd *cobra.Command, args []string) {
+			logger := logex.StandardLogger()
 			osutil.ExitIfError(logic(
-				osutil.CancelOnInterruptOrTerminate(logex.StandardLogger()),
-				debug))
+				osutil.CancelOnInterruptOrTerminate(logger),
+				debug,
+				logger))
 		},
 	}
 
@@ -56,7 +58,7 @@ func main() {
 	osutil.ExitIfError(cmd.Execute())
 }
 
-func logic(ctx context.Context, debug bool) error {
+func logic(ctx context.Context, debug bool, logger *log.Logger) error {
 	bucket, err := s3facade.Bucket("files.function61.com", nil, "us-east-1")
 	if err != nil {
 		return err
@@ -96,8 +98,12 @@ func logic(ctx context.Context, debug bool) error {
 		return jsonfile.Marshal(os.Stdout, output)
 	}
 
-	if err := deploySadetutka(ctx, scriptOuput, workdir, bucket); err != nil {
-		return fmt.Errorf("deploySadetutka: %w", err)
+	if len(scriptOuput.FrameUrls) > 0 {
+		if err := deploySadetutka(ctx, scriptOuput, workdir, bucket); err != nil {
+			return fmt.Errorf("deploySadetutka: %w", err)
+		}
+	} else {
+		logex.Levels(logger).Error.Println("no sadetutka frames found")
 	}
 
 	if err := deployMeteogram(ctx, scriptOuput, bucket); err != nil {

@@ -2,13 +2,16 @@
 exports.handler = async (ctx, console, browser) => {
 	let page;
 
-	let frameUrls;
+	let frameUrls = [];
+	// FIXME: out of order. says `No node found for selector: #tsc_0` even though I find that when looking in the browser
+	/*
 	page = await browser.newPage();
 	try {
 		frameUrls = await fetchAndStoreSadetutkaFrames(ctx, console, page);
 	} finally {
 		await page.close();
 	}
+	*/
 
 	let meteogramUrl;
 	page = await browser.newPage();
@@ -41,7 +44,7 @@ async function fetchAndStoreSadetutkaFrames(ctx, console, page) {
 	// less noise on screenshots
 	await hideMapOverlays(page);
 
-	const map = await page.$('#vectormap div');
+	const map = await page.$('canvas.mapboxgl-canvas');
 	if (!map) {
 		throw new Error('Failed to find map')
 	}
