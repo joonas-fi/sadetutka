@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"context"
+	"fmt"
 	_ "image/png"
 	"io"
 	"io/fs"
@@ -95,6 +96,18 @@ func logic(ctx context.Context, debug bool) error {
 		return jsonfile.Marshal(os.Stdout, output)
 	}
 
+	if err := deploySadetutka(ctx, scriptOuput, workdir, bucket); err != nil {
+		return fmt.Errorf("deploySadetutka: %w", err)
+	}
+
+	if err := deployMeteogram(ctx, scriptOuput, bucket); err != nil {
+		return fmt.Errorf("deployMeteogram: %w", err)
+	}
+
+	return nil
+}
+
+func deploySadetutka(ctx context.Context, scriptOuput *scriptDataOutput, workdir string, bucket *s3facade.BucketContext) error {
 	localFrameFilenames, err := downloadFilesConcurrently(
 		ctx,
 		scriptOuput.FrameUrls,
@@ -123,6 +136,10 @@ func logic(ctx context.Context, debug bool) error {
 		return err
 	}
 
+	return nil
+}
+
+func deployMeteogram(ctx context.Context, scriptOuput *scriptDataOutput, bucket *s3facade.BucketContext) error {
 	log.Println("downloading meteogram")
 
 	meteogram := &bytes.Buffer{}
