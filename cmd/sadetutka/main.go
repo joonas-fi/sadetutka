@@ -33,7 +33,7 @@ type scriptDataOutput struct {
 func main() {
 	if lambdautils.InLambda() {
 		// we just assume it's a CloudWatch scheduler trigger so drop input payload
-		lambda.StartHandler(lambdautils.NoPayloadAdapter(func(ctx context.Context) error { return logic(ctx, false, logex.StandardLogger()) }))
+		lambda.Start(lambdautils.NoPayloadAdapter(func(ctx context.Context) error { return logic(ctx, false, logex.StandardLogger()) }))
 		return
 	}
 
