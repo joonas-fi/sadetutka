@@ -85,7 +85,7 @@ async function fetchAndStoreMeteogram(ctx, console, page) {
 		height: 1024,
 	})
 
-	await page.goto('https://www.foreca.fi/Finland/Tampere?1h', { waitUntil: 'networkidle0' });
+	await page.goto('https://www.foreca.fi/Finland/Pirkkala?1h', { waitUntil: 'networkidle0' });
 
 	await ridOfCookieConsentDialog(page);
 
